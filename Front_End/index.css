@@ -1,1 +1,25 @@
 /* this file contains front end styling */
+
+h1 {
+    color:rgb(135, 163, 87);
+    Background-color: darkolivegreen;
+    width: 250px;
+    border-radius: 30px;
+    margin: auto;
+    text-align: center;
+}
+
+body {
+    background-color:burlywood;
+    
+}
+
+img {
+    border: 5px solid darkolivegreen;
+    height: 600px;
+    width: 400px;
+    position: relative;
+    left: 200px;
+    top: 100px;
+
+}
