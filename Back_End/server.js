@@ -3,6 +3,8 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const port = process.env.PORT || 4050;
+console.log(port)
 
 const app = express();
 app.use(cors());
@@ -19,24 +21,44 @@ var rollbar = new Rollbar({
 });
 
 // record a generic message and send it to Rollbar
-rollbar.log("Hello world!");
+rollbar.log("Tester!");
 
-const port = process.env.PORT || 4050;
 
+
+// setup code
+app.get('/test', (req, res) => {
+    console.log("serverhit")
+    try { 
+        nonExistentFunction();
+        
+    } catch (error) {
+        rollbar.error(error);
+        // expected output: ReferenceError: nonExistentFunction is not defined
+        // Note - error messages will vary depending on browser
+    }
+    
+});
 app.listen(port, () => {
     console.log(`we are in port ${port}`);
 })
  console.log(__dirname);
 
-// setup code
-app.get('/', (req, res) => {
-try { 
-    nonExistentFunction();
 
-  } catch (error) {
-    rollbar.error(error);
-    // expected output: ReferenceError: nonExistentFunction is not defined
-    // Note - error messages will vary depending on browser
-  }
-
-});
+ app.get('/test/tester', (req, res) => {
+     let num = 2
+    try {
+     if (num <= 1) {
+         rollbar.log("number is equal to one")
+         res.status(200).send("all good")
+        }
+     if (num === 2) { 
+         rollbar.warning("two is equal to two")
+         res.status(400).send("there's not really any issue here but we are pretending there is")
+    } else {
+        rollbar.critical("num is not equal to two!")  
+        res.status(400).send("there's an issue here")
+        }
+    } catch (err) {
+    console.log(err)
+    }
+})
